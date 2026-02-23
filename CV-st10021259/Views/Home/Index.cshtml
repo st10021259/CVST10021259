@@ -1,0 +1,240 @@
+﻿@model CV_st10021259.Models.CvModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@Model.Name - CV</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Georgia, serif;
+            background: #f0eeeb;
+            color: #222;
+            padding: 2rem 1rem;
+        }
+
+        .cv {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 3rem;
+            border-top: 6px solid #2c3e50;
+        }
+
+        /* Header */
+        .cv-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1.5rem;
+        }
+
+        .cv-header h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            letter-spacing: .05em;
+        }
+
+        .cv-header .meta {
+            margin-top: .5rem;
+            font-size: .9rem;
+            color: #555;
+        }
+
+        .cv-header .contact {
+            margin-top: .75rem;
+            font-size: .85rem;
+            color: #444;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            font-size: 1rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: #2c3e50;
+            border-bottom: 1px solid #2c3e50;
+            padding-bottom: .3rem;
+            margin-bottom: 1rem;
+        }
+
+        p, li {
+            font-size: .9rem;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        /* Experience */
+        .exp-item {
+            margin-bottom: 1.2rem;
+        }
+
+        .exp-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .exp-role {
+            font-weight: bold;
+            font-size: .95rem;
+            color: #2c3e50;
+        }
+
+        .exp-period {
+            font-size: .8rem;
+            color: #777;
+        }
+
+        .exp-desc {
+            margin-top: .3rem;
+        }
+
+        .exp-leave {
+            font-size: .8rem;
+            color: #888;
+            font-style: italic;
+            margin-top: .2rem;
+        }
+
+        /* Education */
+        .edu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: .6rem;
+        }
+
+        .edu-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .edu-institution {
+            font-weight: bold;
+            font-size: .9rem;
+        }
+
+        .edu-qual {
+            font-size: .85rem;
+            color: #555;
+        }
+
+        .edu-year {
+            font-size: .8rem;
+            color: #777;
+            white-space: nowrap;
+            margin-left: 1rem;
+        }
+
+        /* Skills */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+            list-style: none;
+        }
+
+        .skills-list li {
+            background: #f0eeeb;
+            border: 1px solid #ccc;
+            padding: .25rem .65rem;
+            font-size: .82rem;
+            color: #333;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cv">
+
+        <!-- Header -->
+        <div class="cv-header">
+            <h1>@Model.Name</h1>
+            <div class="meta">
+                @Model.Age years old &nbsp;|&nbsp; @Model.Gender &nbsp;|&nbsp;
+                Driver's Licence: @Model.DriverLicense &nbsp;|&nbsp;
+                Own Transport: @(Model.OwnTransport ? "Yes" : "No") &nbsp;|&nbsp;
+                Languages: @string.Join(", ", Model.Languages)
+            </div>
+            <div class="contact">
+                @Model.Address &nbsp;|&nbsp; @Model.Phone &nbsp;|&nbsp;
+                <a href="mailto:@Model.Email">@Model.Email</a>
+            </div>
+        </div>
+
+        <!-- About -->
+        <div class="section">
+            <h2>About Me</h2>
+            <p>@Model.AboutMe</p>
+        </div>
+
+        <!-- Experience -->
+        <div class="section">
+            <h2>Work Experience</h2>
+            @foreach (var exp in Model.Experiences)
+            {
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <span class="exp-role">@exp.Role</span>
+                        <span class="exp-period">@exp.Period</span>
+                    </div>
+                    <p class="exp-desc">@exp.Description</p>
+                    @if (!string.IsNullOrWhiteSpace(exp.ReasonForLeaving))
+                    {
+                        <p class="exp-leave">Reason for leaving: @exp.ReasonForLeaving</p>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Education -->
+        <div class="section">
+            <h2>Education</h2>
+            @foreach (var edu in Model.EducationList)
+            {
+                <div class="edu-item">
+                    <div>
+                        <div class="edu-institution">@edu.Institution</div>
+                        <div class="edu-qual">@edu.Qualification</div>
+                    </div>
+                    <div class="edu-year">@edu.Year</div>
+                </div>
+            }
+        </div>
+
+        <!-- Skills -->
+        <div class="section">
+            <h2>Skills</h2>
+            <ul class="skills-list">
+                @foreach (var skill in Model.Skills)
+                {
+                    <li>@skill</li>
+                }
+            </ul>
+        </div>
+
+        <!-- Computer Skills -->
+        <div class="section">
+            <h2>Computer Skills</h2>
+            <ul class="skills-list">
+                @foreach (var cs in Model.ComputerSkills)
+                {
+                    <li>@cs</li>
+                }
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>
